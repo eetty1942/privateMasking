@@ -67,7 +67,7 @@ public class InputPrivateInformation {
 				phoneNumber = masking.masking_registrationNum(line);
 				
 				//로직 구현 필요
-				//주민번호
+				//주민번호 정보
 				if(registrationNumHashmap.containsKey(registrationNumber)){
 					int value=0;
 					value = registrationNumHashmap.get(registrationNumber);
@@ -76,7 +76,7 @@ public class InputPrivateInformation {
 					//apiServiceHashmap.put(apiServiceId, 1);
 				}
 				
-				//신용카드번호
+				//신용카드번호 정보
 				if(creditCardNumHashmap.containsKey(creditCardNumber)){
 					int value=0;
 					value = creditCardNumHashmap.get(creditCardNumber);
@@ -85,7 +85,7 @@ public class InputPrivateInformation {
 					//apiServiceHashmap.put(apiServiceId, 1);
 				}
 				
-				//연락처
+				//연락처 정보
 				if(phoneNumHashmap.containsKey(phoneNumber)){
 					int value=0;
 					value = phoneNumHashmap.get(phoneNumber);
