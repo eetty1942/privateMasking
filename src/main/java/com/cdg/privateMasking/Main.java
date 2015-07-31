@@ -1,14 +1,15 @@
 package com.cdg.privateMasking;
 
-import java.io.IOException;
-
 public class Main {
-	InputPrivateInformation inputFile = new InputPrivateInformation();
-	OutputPrivateInformation outputFile = new OutputPrivateInformation();
 	
-	try {
-		//outputFile.createFile(inputFromeFile.loadFile());
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		private static String INPUT_FILE = "privateInfo.txt";
+		
+		public static void main(String[] args) {
+			
+			InputPrivateInformation fileInput = new InputPrivateInformation(INPUT_FILE);
+			PrivateInfoMasking masking = new PrivateInfoMasking(fileInput);
+			
+			masking.distribute();
+		}
+
 }
