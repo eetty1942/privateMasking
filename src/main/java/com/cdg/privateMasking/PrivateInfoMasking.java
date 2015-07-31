@@ -1,6 +1,5 @@
 package com.cdg.privateMasking;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class PrivateInfoMasking {
 	private static final Logger logger = LoggerFactory.getLogger(InputPrivateInformation.class);
-	/*private final String PHONE_NUM_PATTERN = "(01[016789])(\\d{3,4})(\\d{4})";
-	private final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";*/
+	/*private final String PHONE_NUM_PATTERN = "(01[016789])(\\d{3,4})(\\d{4})";*/
 	/*public String PHONE_NUM_PATTERN = "(01[016789])(\\d{3,4})(\\d{4})";*/
 	public static String PHONE_NUM_PATTERN = "(01[0|1|7|8|9])([- 　\\t\\n\\x0B\\f\\r]*)(\\d{3,4})([- 　\\t\\n\\x0B\\f\\r]*)\\d{4}";
 	public static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -42,28 +39,33 @@ public class PrivateInfoMasking {
 	}
 	
 	public void distribute() {
-		
 
 		Iterator<String> it = lineList.listIterator();
 
 		while (it.hasNext()) {
 
 			String str = (String) it.next();
-			String id = getMaskedId(str);
-			out.createFile(id);
+			getMaskedId(str);
+			out.createFile(resultPhone, resultEmail);
 
 		} 
 
 	}
 
 	public static String getMaskedId(String id) {
-	      if (isEmail(id)) {
-	         return getMaskedEmail(id);
-	      } else if (isPhoneNum(id)) {
-	         return getMaskedPhoneNum(id);
-	      }
-	      return id;
-	   }
+		
+		//해당 영역에 문제가 있습니다.
+		//검증과정을 거쳤음에도 해당 조건문 내부로의 접근을 건너뜁니다. 
+		
+      if (isEmail(id)) {
+    	  resultEmail = getMaskedEmail(id); 
+         return resultEmail;
+      } else if (isPhoneNum(id)) {
+    	  resultPhone = getMaskedPhoneNum(id);
+         return resultPhone;
+      }
+      return id;
+   }
 
 	   /**
 	    * 이메일 포맷 Validator
@@ -90,8 +92,9 @@ public class PrivateInfoMasking {
 	    * @return isValid
 	    */
 	   private static boolean isValid(final String regex, final String target) {
-	      Matcher matcher = Pattern.compile(regex).matcher(target);
-	      return matcher.matches();
+		   Matcher matcher = Pattern.compile(regex).matcher(target);
+		      return matcher.matches();
+	      
 	   }
 
 	   /**
@@ -117,14 +120,15 @@ public class PrivateInfoMasking {
 	         if (length < 3) {
 	            char[] c = new char[length];
 	            Arrays.fill(c, '*');
-	            return email.replace(id, String.valueOf(c));
+	            
+	            return resultEmail = email.replace(id, String.valueOf(c));
 	         } else if (length == 3) {
-	            return email.replaceAll("\\b(\\S+)[^@][^@]+@(\\S+)", "$1**@$2");
+	            return resultEmail = email.replaceAll("\\b(\\S+)[^@][^@]+@(\\S+)", "$1**@$2");
 	         } else {
-	            return email.replaceAll("\\b(\\S+)[^@][^@][^@]+@(\\S+)", "$1***@$2");
+	            return resultEmail = email.replaceAll("\\b(\\S+)[^@][^@][^@]+@(\\S+)", "$1***@$2");
 	         }
 	      }
-	      return email;
+	      return resultEmail = email;
 	   }
 
 	   /**
@@ -144,9 +148,11 @@ public class PrivateInfoMasking {
 	         String replaceTarget = matcher.group(2);
 	         char[] c = new char[replaceTarget.length()];
 	         Arrays.fill(c, '*');
-	         return phoneNum.replace(replaceTarget, String.valueOf(c));
+	         return resultPhone = phoneNum.replace(replaceTarget, String.valueOf(c));
 	      }
-	      return phoneNum;
+	      return resultPhone = phoneNum;
 	   }
+	   
+	   
 	
 }
